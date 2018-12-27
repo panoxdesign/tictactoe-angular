@@ -1,1 +1,141 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Lato|Major+Mono+Display");
+
+$primary: #330136;
+$secondary: #962c22;
+
+:root {
+  box-sizing: border-box;
+  // font-family: "Lato", sans-serif;
+  font-family: "Major Mono Display", monospace;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+  outline: 0;
+  text-transform: lowercase;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: $primary;
+  color: white;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.item {
+  flex-direction: column;
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  // background: rgb(250, 250, 250);
+  &.item--center {
+    margin: auto;
+  }
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.matchfield {
+  width: 15em;
+  height: 15em;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.field-row {
+  width: 100%;
+  height: calc(100% / 3);
+  display: flex;
+}
+.field {
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  max-width: calc(100% / 3);
+  .field__inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &.field__winner-row {
+    }
+  }
+}
+
+.result {
+  display: block;
+}
+.row {
+  & + .row {
+    margin-top: 25px;
+  }
+}
+
+.buttons {
+  margin-top: 40px;
+  width: 100%;
+  position: relative;
+}
+
+.btn {
+  background: transparent;
+  padding: 1em 1.5em;
+  border: 3px solid $secondary;
+  color: white;
+  font-size: 1em;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 15em;
+  font-weight: bold;
+  position: relative;
+  display: block;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:after {
+    content: "";
+  }
+
+  &:hover:after {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    animation: animateHover 0.45s ease-out infinite;
+    border: 3px solid $secondary;
+  }
+}
+
+@keyframes animateHover {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.2, 1.8);
+  }
+}
