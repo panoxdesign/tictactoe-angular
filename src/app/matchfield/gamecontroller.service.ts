@@ -1,5 +1,6 @@
 import { GameEvent } from "./gamecontroller.service";
 import { Injectable, EventEmitter } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -7,10 +8,10 @@ import { Injectable, EventEmitter } from "@angular/core";
 export class GamecontrollerService {
   private matchfield: number[] = new Array(9);
 
-  private status: GameStatus;
-  private actualPlayer: Player;
+  private _status: GameStatus;
+  private _actualPlayer: Player;
 
-  gameEventEmitter = new EventEmitter<GameEvent>();
+  private _gameEventEmitter = new EventEmitter<GameEvent>();
 
   private readonly winningSituations = [
     [0, 1, 2],
@@ -27,8 +28,8 @@ export class GamecontrollerService {
 
   reset() {
     this.matchfield.fill(0, 0, 9);
-    this.status = GameStatus.RUNNING;
-    this.actualPlayer = Player.X_PLAYER;
+    this._status = GameStatus.RUNNING;
+    this._actualPlayer = Player.X_PLAYER;
     this.emitEvent();
   }
 
@@ -36,11 +37,11 @@ export class GamecontrollerService {
     if (this.isWon() || this.getField(fieldNumber)) {
       return;
     }
-    this.matchfield[fieldNumber] = this.actualPlayer;
+    this.matchfield[fieldNumber] = this._actualPlayer;
     this.calcWinning();
     if (!this.isWon()) {
-      this.actualPlayer =
-        this.actualPlayer === Player.X_PLAYER
+      this._actualPlayer =
+        this._actualPlayer === Player.X_PLAYER
           ? Player.O_PLAYER
           : Player.X_PLAYER;
       this.emitEvent();
@@ -54,14 +55,11 @@ export class GamecontrollerService {
   private calcWinning() {
     for (let i = 0; i < this.winningSituations.length; i++) {
       if (
-        (this.matchfield[this.winningSituations[i][0]] === Player.X_PLAYER &&
-          this.matchfield[this.winningSituations[i][1]] === Player.X_PLAYER &&
-          this.matchfield[this.winningSituations[i][2]] === Player.X_PLAYER) ||
-        (this.matchfield[this.winningSituations[i][0]] === Player.O_PLAYER &&
-          this.matchfield[this.winningSituations[i][1]] === Player.O_PLAYER &&
-          this.matchfield[this.winningSituations[i][2]] === Player.O_PLAYER)
+        this.matchfield[this.winningSituations[i][0]] === this.actualPlayer &&
+        this.matchfield[this.winningSituations[i][1]] === this.actualPlayer &&
+        this.matchfield[this.winningSituations[i][2]] === this.actualPlayer
       ) {
-        this.status = GameStatus.WINNER;
+        this._status = GameStatus.WINNER;
         this.emitEvent();
       }
     }
@@ -70,28 +68,30 @@ export class GamecontrollerService {
       !this.isWon() &&
       this.matchfield.find(value => value === 0) === undefined
     ) {
-      this.status = GameStatus.REMI;
+      this._status = GameStatus.REMI;
       this.emitEvent();
     }
   }
 
-  getActualPlayer(): Player {
-    return this.actualPlayer;
+  get actualPlayer(): Player {
+    return this._actualPlayer;
   }
 
-  isWon(): boolean {
-    return this.status === GameStatus.WINNER || this.status === GameStatus.REMI;
+  public get gameEventEmitter() {
+    return this._gameEventEmitter;
   }
 
-  getGameEventEmitter() {
-    return this.gameEventEmitter;
+  private isWon(): boolean {
+    return (
+      this._status === GameStatus.WINNER || this._status === GameStatus.REMI
+    );
   }
 
-  emitEvent() {
+  private emitEvent() {
     this.gameEventEmitter.emit({
-      status: this.status,
+      status: this._status,
       gameSnapshot: this.matchfield.slice(),
-      actualPlayer: this.getActualPlayer()
+      actualPlayer: this.actualPlayer
     });
   }
 }

@@ -16,11 +16,9 @@ export class ResultComponent implements OnInit, OnDestroy {
   constructor(private gc: GamecontrollerService) {}
 
   ngOnInit() {
-    this.subscriber = this.gc
-      .getGameEventEmitter()
-      .subscribe((event: GameEvent) => {
-        this.gameEvent = event;
-      });
+    this.subscriber = this.gc.gameEventEmitter.subscribe((event: GameEvent) => {
+      this.gameEvent = event;
+    });
   }
 
   ngOnDestroy() {

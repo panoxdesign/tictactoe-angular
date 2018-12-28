@@ -3,6 +3,7 @@
 
 $primary: #330136;
 $secondary: #962c22;
+$border-size: 2px;
 
 :root {
   box-sizing: border-box;
@@ -62,13 +63,20 @@ h1 {
   width: 100%;
   height: calc(100% / 3);
   display: flex;
+  .field:not(:first-child) {
+    border-left: transparent;
+  }
+  &:last-child .field {
+    border-bottom: $border-size solid white;
+  }
 }
 .field {
   display: flex;
-  flex: 1 0 auto;
+  flex: 1 0 0;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
+  border: $border-size solid white;
+  border-bottom: transparent;
   max-width: calc(100% / 3);
   .field__inner {
     width: 100%;
