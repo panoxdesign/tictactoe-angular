@@ -9,8 +9,6 @@ export class GameeventPipePipe implements PipeTransform {
   private gameEvent: GameEvent;
 
   transform(value: any, args?: any): any {
-    console.log(value);
-
     if (value) {
       this.gameEvent = value;
       if (this.gameEvent.status === GameStatus.RUNNING) {

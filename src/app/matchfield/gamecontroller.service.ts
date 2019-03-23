@@ -1,6 +1,6 @@
 import { GameEvent } from "./gamecontroller.service";
-import { Injectable, EventEmitter } from "@angular/core";
-import { Observable } from "rxjs";
+import { Injectable } from "@angular/core";
+import { Subject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -11,8 +11,9 @@ export class GamecontrollerService {
 
   private _status: GameStatus;
   private _actualPlayer: Player;
+  private _winnerFields: number[] = [];
 
-  private _gameEventEmitter = new EventEmitter<GameEvent>();
+  private _gameEventEmitter = new Subject<GameEvent>();
 
   private readonly winningSituations = [
     [0, 1, 2],
@@ -31,6 +32,7 @@ export class GamecontrollerService {
     this._matchfield.fill(0, 0, this.MATCHFIELD_LENGTH);
     this._status = GameStatus.RUNNING;
     this._actualPlayer = Player.X_PLAYER;
+    this._winnerFields = [];
     this.emitEvent();
   }
 
@@ -61,6 +63,11 @@ export class GamecontrollerService {
         this._matchfield[this.winningSituations[i][2]] === this.actualPlayer
       ) {
         this._status = GameStatus.WINNER;
+        this._winnerFields.push(
+          this.winningSituations[i][0],
+          this.winningSituations[i][1],
+          this.winningSituations[i][2]
+        );
       }
     }
 
@@ -76,8 +83,8 @@ export class GamecontrollerService {
     return this._actualPlayer;
   }
 
-  public get gameEventEmitter() {
-    return this._gameEventEmitter;
+  public get gameEventEmitter(): Observable<GameEvent> {
+    return this._gameEventEmitter.asObservable();
   }
 
   private isWon(): boolean {
@@ -87,10 +94,11 @@ export class GamecontrollerService {
   }
 
   private emitEvent() {
-    this.gameEventEmitter.emit({
+    this._gameEventEmitter.next({
       status: this._status,
       gameSnapshot: this._matchfield.slice(),
-      actualPlayer: this.actualPlayer
+      actualPlayer: this.actualPlayer,
+      winnerFields: this._winnerFields
     });
   }
 }
@@ -110,4 +118,5 @@ export interface GameEvent {
   status: GameStatus;
   gameSnapshot: number[];
   actualPlayer: Player;
+  winnerFields: number[];
 }
