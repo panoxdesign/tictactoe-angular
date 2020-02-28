@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostBinding } from "@angular/core";
-import { GamecontrollerService, GameStatus } from "../gamecontroller.service";
+import { GamecontrollerService } from "../gamecontroller.service";
+import { GameStatus } from "../gamestatus/GameStatus";
 import { map, distinctUntilChanged } from "rxjs/operators";
 
 @Component({

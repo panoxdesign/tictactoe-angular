@@ -1,7 +1,5 @@
-import {
-  GamecontrollerService,
-  GameEvent
-} from "./../matchfield/gamecontroller.service";
+import { GamecontrollerService } from "./../matchfield/gamecontroller.service";
+import { GameEvent } from "./../matchfield/gamestatus/GameEvent";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 
 @Component({

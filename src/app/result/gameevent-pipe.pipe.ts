@@ -1,4 +1,5 @@
-import { GameEvent, GameStatus } from "./../matchfield/gamecontroller.service";
+import { GameEvent } from "./../matchfield/gamestatus/GameEvent";
+import { GameStatus } from "./../matchfield/gamestatus/GameStatus";
 import { Pipe, PipeTransform } from "@angular/core";
 import { PlayerPipePipe } from "../matchfield/field/player-pipe.pipe";
 

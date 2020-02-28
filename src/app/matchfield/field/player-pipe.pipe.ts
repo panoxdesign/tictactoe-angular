@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Player } from "./../gamecontroller.service";
+import { Player } from "./../gamestatus/Player";
 
 @Pipe({
   name: "playerPipe"

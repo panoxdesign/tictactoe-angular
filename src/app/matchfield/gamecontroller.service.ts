@@ -1,6 +1,8 @@
-import { GameEvent } from "./gamecontroller.service";
 import { Injectable } from "@angular/core";
 import { Subject, Observable } from "rxjs";
+import { GameStatus } from "./gamestatus/GameStatus";
+import { GameEvent } from "./gamestatus/GameEvent";
+import { Player } from "./gamestatus/Player";
 
 @Injectable({
   providedIn: "root"
@@ -101,22 +103,4 @@ export class GamecontrollerService {
       winnerFields: this._winnerFields
     });
   }
-}
-
-export enum Player {
-  X_PLAYER = 1,
-  O_PLAYER = 2
-}
-
-export enum GameStatus {
-  RUNNING,
-  WINNER,
-  REMI
-}
-
-export interface GameEvent {
-  status: GameStatus;
-  gameSnapshot: number[];
-  actualPlayer: Player;
-  winnerFields: number[];
 }
